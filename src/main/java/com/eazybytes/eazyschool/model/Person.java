@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.beans.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -86,4 +87,7 @@ public class Person extends BaseEntity{
             inverseJoinColumns = {
                     @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
     private Set<Courses> courses = new HashSet<>();
+    
+    private String profilePictureUrl;
+
 }
