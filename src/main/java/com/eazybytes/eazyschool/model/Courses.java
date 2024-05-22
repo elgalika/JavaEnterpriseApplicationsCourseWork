@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +23,12 @@ public class Courses extends BaseEntity{
     private String name;
 
     private String fees;
+
+    private String imageUrl;
+    
+    @Column(columnDefinition = "TEXT")
+    @Size(max = 600)
+    private String description; 
 
     @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private Set<Person> persons = new HashSet<>();
