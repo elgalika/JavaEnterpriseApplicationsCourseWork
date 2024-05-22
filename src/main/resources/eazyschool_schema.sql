@@ -102,3 +102,7 @@ CREATE TABLE IF NOT EXISTS `person_courses` (
 );
 
 mysql> ALTER TABLE person ADD COLUMN profile_picture_url VARCHAR(255);
+
+ALTER TABLE courses
+ADD COLUMN image_url VARCHAR(255),
+ADD COLUMN description TEXT;
