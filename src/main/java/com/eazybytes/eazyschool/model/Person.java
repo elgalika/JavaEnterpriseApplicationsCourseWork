@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import java.util.List;
 
 // import java.beans.Transient;
 import java.util.HashSet;
@@ -80,14 +81,22 @@ public class Person extends BaseEntity{
     @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
     private EazyClass eazyClass;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "person_courses",
-            joinColumns = {
-                    @JoinColumn(name = "person_id", referencedColumnName = "personId")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
-    private Set<Courses> courses = new HashSet<>();
+//     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//     @JoinTable(name = "person_courses",
+//             joinColumns = {
+//                     @JoinColumn(name = "person_id", referencedColumnName = "personId")},
+//             inverseJoinColumns = {
+//                     @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
+//     private Set<Courses> courses = new HashSet<>();
     
     private String profilePictureUrl;
+
+    @ManyToMany
+    @JoinTable(
+        name = "person_courses",
+        joinColumns = @JoinColumn(name = "person_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Courses> courses;
 
 }

@@ -153,6 +153,23 @@ Author URL: http://w3layouts.com
                     </a>
                 </div>
 
+<!-- New Lecturers tab -->
+<div class="col-sm-6 col-lg-3" sec:authorize="hasRole('ROLE_ADMIN')">
+    <a th:href="@{/admin/lecturers}">
+        <div class="overview-item overview-item--c4">
+            <div class="overview__inner">
+                <div class="overview-box clearfix">
+                    <div class="icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="text">
+                        <h2>Lecturers</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </a> 
+        </div>
                 
             </div>
         </div>

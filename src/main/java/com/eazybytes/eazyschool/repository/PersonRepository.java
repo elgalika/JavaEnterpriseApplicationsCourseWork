@@ -1,6 +1,9 @@
 package com.eazybytes.eazyschool.repository;
 
 import com.eazybytes.eazyschool.model.Person;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     Person readByEmail(String email);
+
+    List<Person> findByRolesRoleName(String roleName);
+
 
 }

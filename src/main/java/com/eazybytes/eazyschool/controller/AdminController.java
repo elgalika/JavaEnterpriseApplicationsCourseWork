@@ -179,4 +179,39 @@ public class AdminController {
         return modelAndView;
     }
 
+
+    
+    @GetMapping("/lecturers")
+    public String viewLecturers(Model model) {
+        List<Person> lecturers = personRepository.findByRolesRoleName("LECTURER");
+        model.addAttribute("lecturers", lecturers);
+        return "admin_lecturers.html";
+    }
+
+    @GetMapping("/assignCourse")
+    public String showAssignCourseForm(Model model) {
+        List<Person> lecturers = personRepository.findByRolesRoleName("LECTURER");
+        List<Courses> courses = coursesRepository.findAll();
+        model.addAttribute("lecturers", lecturers);
+        model.addAttribute("courses", courses);
+        return "assign_course.html";
+    }
+
+    @PostMapping("/assignCourse")
+    public String assignCourseToLecturer(@RequestParam("lecturerId") int lecturerId, @RequestParam("courseId") int courseId) {
+        Optional<Person> lecturerOpt = personRepository.findById(lecturerId);
+        Optional<Courses> courseOpt = coursesRepository.findById(courseId);
+
+        if (lecturerOpt.isPresent() && courseOpt.isPresent()) {
+            Person lecturer = lecturerOpt.get();
+            Courses course = courseOpt.get();
+            lecturer.getCourses().add(course);
+            course.getPersons().add(lecturer);
+            personRepository.save(lecturer);
+            coursesRepository.save(course);
+        }
+        return "redirect:/admin/lecturers";
+    }
+
+
 }
