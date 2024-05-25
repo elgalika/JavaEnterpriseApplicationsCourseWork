@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -75,40 +77,87 @@ public class LecturerController {
         return modelAndView;
     }
 
+    // @PostMapping("/uploadMaterial")
+    // public String uploadMaterial(@RequestParam("courseId") int courseId, 
+    //                             @RequestParam("file") MultipartFile file,
+    //                             HttpSession session, Model model) {
+    //     Person person = (Person) session.getAttribute("loggedInPerson");
+    //     Optional<Courses> optionalCourse = coursesRepository.findById(courseId);
+    //     if (optionalCourse.isPresent()) {
+    //         Courses course = optionalCourse.get();
+    //         if (!file.isEmpty() && file.getContentType().equals("application/pdf") && file.getSize() <= 10485760) {
+    //             try {
+    //                 String filename = StringUtils.cleanPath(file.getOriginalFilename());
+    //                 Path path = Paths.get(UPLOAD_DIR + filename);
+    //                 Files.copy(file.getInputStream(), path);
+
+    //                 CourseDocuments document = new CourseDocuments();
+    //                 document.setFileName(filename);
+    //                 document.setFilePath("/assets/uploads/" + filename);
+    //                 document.setCourses(course);
+    //                 courseDocumentsRepository.save(document);
+
+    //                 return "redirect:/lecturer/courses";
+    //             } catch (IOException e) {
+    //                 e.printStackTrace();
+    //                 model.addAttribute("error", "File upload failed: " + e.getMessage());
+    //             }
+    //         } else {
+    //             model.addAttribute("error", "Invalid file or file format not supported");
+    //         }
+    //     } else {
+    //         model.addAttribute("error", "Course not found");
+    //     }
+    //     return "lecturer_courses.html";
+    // }
+    
+    
     @PostMapping("/uploadMaterial")
     public String uploadMaterial(@RequestParam("courseId") int courseId, 
                                 @RequestParam("file") MultipartFile file,
-                                HttpSession session, Model model) {
-        Person person = (Person) session.getAttribute("loggedInPerson");
+                                HttpSession session, RedirectAttributes redirectAttributes) {
         Optional<Courses> optionalCourse = coursesRepository.findById(courseId);
         if (optionalCourse.isPresent()) {
             Courses course = optionalCourse.get();
-            if (!file.isEmpty() && file.getContentType().equals("application/pdf") && file.getSize() <= 10485760) {
-                try {
-                    String filename = StringUtils.cleanPath(file.getOriginalFilename());
-                    Path path = Paths.get(UPLOAD_DIR + filename);
-                    Files.copy(file.getInputStream(), path);
+            if (!file.isEmpty()) {
+                if ("application/pdf".equals(file.getContentType())) {
+                    if (file.getSize() <= 10485760) { // 10 MB = 10 * 1024 * 1024 bytes
+                        try {
+                            String filename = StringUtils.cleanPath(file.getOriginalFilename());
+                            Path path = Paths.get(UPLOAD_DIR + filename);
+                            Files.copy(file.getInputStream(), path);
 
-                    CourseDocuments document = new CourseDocuments();
-                    document.setFileName(filename);
-                    document.setFilePath("/assets/uploads/" + filename);
-                    document.setCourses(course);
-                    courseDocumentsRepository.save(document);
+                            CourseDocuments document = new CourseDocuments();
+                            document.setFileName(filename);
+                            document.setFilePath("/assets/uploads/" + filename);
+                            document.setCourses(course);
+                            document.setUploadedAt(LocalDateTime.now());
+                            courseDocumentsRepository.save(document);
 
-                    return "redirect:/lecturer/courses";
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    model.addAttribute("error", "File upload failed: " + e.getMessage());
+                            return "redirect:/lecturer/courses";
+                        } catch (IOException e) {
+                            redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
+                            return "redirect:/lecturer/courses";
+                        }
+                    } else {
+                        redirectAttributes.addFlashAttribute("error", "File size exceeds the maximum allowed size of 10 MB.");
+                    }
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Only PDF files are allowed.");
                 }
             } else {
-                model.addAttribute("error", "Invalid file or file format not supported");
+                redirectAttributes.addFlashAttribute("error", "No file selected for upload.");
             }
         } else {
-            model.addAttribute("error", "Course not found");
+            redirectAttributes.addFlashAttribute("error", "Course not found.");
         }
-        return "lecturer_courses.html";
+        return "redirect:/lecturer/courses";
     }
-    @PostMapping("/deleteDocument")
+
+  
+    
+    
+    @PostMapping("/deleteMaterial")
     public String deleteMaterial(@RequestParam("documentId") int documentId) {
         courseDocumentsRepository.deleteById(documentId);
         return "redirect:/lecturer/courses";
