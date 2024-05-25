@@ -115,7 +115,7 @@ public class LecturerController {
     @PostMapping("/uploadMaterial")
     public String uploadMaterial(@RequestParam("courseId") int courseId, 
                                 @RequestParam("file") MultipartFile file,
-                                HttpSession session, RedirectAttributes redirectAttributes) {
+                                HttpSession session, Model model) {
         Optional<Courses> optionalCourse = coursesRepository.findById(courseId);
         if (optionalCourse.isPresent()) {
             Courses course = optionalCourse.get();
@@ -126,35 +126,35 @@ public class LecturerController {
                             String filename = StringUtils.cleanPath(file.getOriginalFilename());
                             Path path = Paths.get(UPLOAD_DIR + filename);
                             Files.copy(file.getInputStream(), path);
-
+    
                             CourseDocuments document = new CourseDocuments();
                             document.setFileName(filename);
                             document.setFilePath("/assets/uploads/" + filename);
                             document.setCourses(course);
                             document.setUploadedAt(LocalDateTime.now());
                             courseDocumentsRepository.save(document);
-
+    
                             return "redirect:/lecturer/courses";
                         } catch (IOException e) {
-                            redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
-                            return "redirect:/lecturer/courses";
+                            model.addAttribute("error", "File upload failed: " + e.getMessage());
+                            return "lecturer_courses";
                         }
                     } else {
-                        redirectAttributes.addFlashAttribute("error", "File size exceeds the maximum allowed size of 10 MB.");
+                        model.addAttribute("error", "File size exceeds the maximum allowed size of 10 MB.");
                     }
                 } else {
-                    redirectAttributes.addFlashAttribute("error", "Only PDF files are allowed.");
+                    model.addAttribute("error", "Only PDF files are allowed.");
                 }
             } else {
-                redirectAttributes.addFlashAttribute("error", "No file selected for upload.");
+                model.addAttribute("error", "No file selected for upload.");
             }
         } else {
-            redirectAttributes.addFlashAttribute("error", "Course not found.");
+            model.addAttribute("error", "Course not found.");
         }
-        return "redirect:/lecturer/courses";
+        return "lecturer_courses";
     }
-
-  
+    
+      
     
     
     @PostMapping("/deleteMaterial")
