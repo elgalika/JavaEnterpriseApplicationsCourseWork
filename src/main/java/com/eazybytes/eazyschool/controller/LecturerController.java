@@ -108,7 +108,7 @@ public class LecturerController {
         }
         return "lecturer_courses.html";
     }
-    @PostMapping("/deleteMaterial")
+    @PostMapping("/deleteDocument")
     public String deleteMaterial(@RequestParam("documentId") int documentId) {
         courseDocumentsRepository.deleteById(documentId);
         return "redirect:/lecturer/courses";
