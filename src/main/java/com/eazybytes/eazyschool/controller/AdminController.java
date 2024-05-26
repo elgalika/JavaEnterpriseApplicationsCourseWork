@@ -213,5 +213,21 @@ public class AdminController {
         return "redirect:/admin/lecturers";
     }
 
+    @GetMapping("/addLecturerForm")
+    public String showAddLecturerForm(Model model) {
+        model.addAttribute("person", new Person());
+        return "add_lecturer.html";
+    }
+
+    @PostMapping("/addLecturer")
+    public String addLecturer(@Valid @ModelAttribute("person") Person person, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "add_lecturer.html";
+        }
+        Roles lecturerRole = personRepository.findRoleByName("LECTURER");
+        person.setRoles(lecturerRole);
+        personRepository.save(person);
+        return "redirect:/admin/lecturers";
+    }
 
 }
