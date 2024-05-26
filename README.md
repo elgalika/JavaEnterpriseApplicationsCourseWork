@@ -1,4 +1,3 @@
-
 ---
 
 # Java Enterprise Applications Course Work
@@ -15,6 +14,7 @@ Welcome to the Java Enterprise Applications Course Work repository. This project
   - [Usage](#usage)
 - [Contributing](#contributing)
 - [Acknowledgements](#acknowledgements)
+- [Images](#images)
 
 ## Project Overview
 
@@ -102,6 +102,36 @@ This project builds upon a basic Spring Boot application by adding features such
 
 This coursework is part of the 'Enterprise Applications in Java' course. Special thanks to our instructor for the guidance and support.
 
----
+## Images
 
-Feel free to make any additional adjustments to suit your needs!
+![Profile Image](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/d1e91b16-c2ae-454d-b6ee-f8c7f00d7830)
+*Profile Image*
+
+![Add_New Course](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/1d93169c-8a13-489f-92b8-698db93a6883)
+
+*Add New Course*
+
+![Added Courses](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/5e188188-b20d-4131-8cfc-ef732a404b39)
+*Added Courses*
+
+![Lecturer Courses](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/6c8c35f5-a3ed-4d0b-a1c2-fa821006539a)
+
+*Lecturer Courses*
+
+![Assign Courses](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/267f6259-f959-4319-bbe4-e54e5d79299a)
+
+*Assign Courses*
+
+![Add Lecturer](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/c411df03-1126-4757-bab3-4306b9182c71)
+
+*Add Lecturer*
+
+![Courses Documents](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/ce56d3be-d452-4fb9-bbb8-c0a1c00a8679)
+
+*Courses Documents*
+
+![Students Enrolled](https://github.com/elgalika/JavaEnterpriseApplicationsCourseWork/assets/150843883/072fe429-03cf-45b4-8fcf-2ec3a69425a3)
+
+*Students Enrolled*
+
+---
